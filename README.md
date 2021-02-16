@@ -1,73 +1,91 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+# NestJS TailWind
+1. Project Init
+```sh
+$ npm i -g @nestjs/cli
+$ nest new nestjs-tailwind
+$ cd nestjs-tailwind
+$ npm i pug
 ```
 
-## Running the app
+2. Create a Basic Server
+- src/main.ts
+```ts
+async function bootstrap() {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-```bash
-# development
-$ npm run start
+  app.useStaticAssets(join(__dirname, 'public'));
+  app.setBaseViewsDir(join(__dirname, 'view'));
+  app.setViewEngine('pug');
 
-# watch mode
-$ npm run start:dev
+  await app.listen(3000);
+}
+bootstrap();
+```
+- src/app.controller.ts
+```ts
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
 
-# production mode
-$ npm run start:prod
+  @Get()
+  @Render(`index`)
+  getHello(): string {
+    return this.appService.getHello();
+  }
+}
+```
+- views/index.pug
+```pug
+doctype html
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0")
+    title Node.js with TailwindCSS, Express and Pug
+    link(href="./styles/style.css", rel="stylesheet")
+  body
+    h1 Hello world!
+    p My starter template
 ```
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+2. Add Tailwind CSS
+```sh
+$ npm install tailwindcss postcss autoprefixer postcss-cli
+$ npx tailwindcss init
 ```
 
-## Support
+3. PostCSS
+- postcss.config.js
+```js
+module.exports = {
+  plugins: [
+    require('tailwindcss'),
+    require('autoprefixer'),
+  ]
+}
+```
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+4. Create TailWindCSS
+- public/styles/tailwind.css
+```css
+@tailwind base; 
+@tailwind components; 
+@tailwind utilities;
+```
 
-## Stay in touch
+- public/styles/style.css
+  그냥 빈파일로 만들어 놓습니다.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+5. Pakage.json
+```json
+"tailwind:css": "postcss src/public/styles/tailwind.css -o src/public/styles/style.css"
+```
 
-## License
+6. Run Script
+```sh
+$ npm run tailwind:css
+```
+> Reference
+[How to Use Tailwind CSS With Node.js, Express, and Pug](https://medium.com/better-programming/how-to-use-tailwind-css-with-node-js-express-and-pug-8591c47dd54f)
 
-Nest is [MIT licensed](LICENSE).
