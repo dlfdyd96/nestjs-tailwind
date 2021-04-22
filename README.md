@@ -89,3 +89,10 @@ $ npm run tailwind:css
 > Reference
 [How to Use Tailwind CSS With Node.js, Express, and Pug](https://medium.com/better-programming/how-to-use-tailwind-css-with-node-js-express-and-pug-8591c47dd54f)
 
+
+---
+
+```
+- pub 에서 hbs 로 변경
+- npm i -D webpack webpack-cli webpack-node-externals ts-loader
+```
