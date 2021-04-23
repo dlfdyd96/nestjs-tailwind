@@ -92,7 +92,32 @@ $ npm run tailwind:css
 
 ---
 
+##### 2021.04.23 배창현
+- 변경사항
+
 ```
-- pub 에서 hbs 로 변경
-- npm i -D webpack webpack-cli webpack-node-externals ts-loader
+- handlebars view tamplate 으로 변경(기존 pug) : 기존 pug 모듈 삭제하고, npm i -S hbs 설치
+- nest 개발 시, assets 들은 추적을 하지 않기 때문에 웹팩을 구성하여 커스텀
+참조 : https://docs.nestjs.com/recipes/hot-reload
+npm i -D webpack webpack-cli webpack-node-externals run-script-webpack-plugin clean-webpack-plugin copy-webpack-plugin
+root 경로에 webpack.config.js 생성 후 작성
+
+- 웹팩 빌드 시, run-script-webpack-plugin 실행이 되어 종료가 안되므로 webpack.config.js module.exports 를 함수 형식으로 작성 및 변경
+- tailwind css 구성 : npm i -D tailwindcss postcss postcss-cli autoprefixer
+- tailwind 구성 파일 작성(tailwind.config.js)
+- postcss 구성 파일 작성(postcss.config.js)
+- 2가지 실행 스크립트를 실행하기 위해서 concurrently 모듈 설치(npm i -D concurrently)
+
+```
+
+
+- 추가한 npm script
+
+```
+"dev": "concurrently \"webpack --watch\" \"npm run dev:tailwind\""
+"dev:tailwind": "postcss -w ./src/public/tailwind/tailwind.css -o ./src/public/css/tailwind.output.css"
+"build:webpack": "webpack --env NODE_ENV=production --config webpack.config.js --mode=production"
+"build:tailwind": "postcss ./src/public/tailwind/tailwind.css -o ./src/public/css/tailwind.output.css"
+"start:prod:webpack": "node dist/server"
+
 ```
