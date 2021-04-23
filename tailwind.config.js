@@ -1,6 +1,6 @@
 module.exports = {
   purge: {
-    enabled: process.env.NODE_ENV === 'production',
+    enabled: process.env.NODE_ENV.trim() === 'production',
     content: ['./src/views/**/*.hbs'],
   },
   darkMode: false, // or 'media' or 'class'
