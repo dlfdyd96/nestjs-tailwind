@@ -4,7 +4,6 @@ const nodeExternals = require('webpack-node-externals');
 const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
   mode: 'development',
@@ -26,11 +25,6 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
-      {
-        test: /\.css$/i,
-        include: path.resolve(__dirname, 'src/public/css'),
-        use: [MiniCssExtractPlugin.loader, 'style-loader', 'css-loader', 'postcss-loader'],
-      },
     ],
   },
   resolve: {
@@ -38,12 +32,9 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: 'output.cnss',
-    }),
     new CopyPlugin({
       patterns: [
-        { from: "./src/public", to: path.join(__dirname, 'dist/public') },
+        { from: "./src/public/css", to: path.join(__dirname, 'dist/public/css') },
         { from: "./src/views", to: path.join(__dirname, 'dist/views') },
       ],
     }),

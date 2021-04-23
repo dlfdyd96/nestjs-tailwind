@@ -79,7 +79,7 @@ module.exports = {
 
 5. Pakage.json
 ```json
-"tailwind:css": "postcss src/public/styles/tailwind.css -o src/public/styles/style.css"
+"tailwind:css": "postcss src/public/styles/tailwind.css -o src/public/styles/tailwind.css"
 ```
 
 6. Run Script
